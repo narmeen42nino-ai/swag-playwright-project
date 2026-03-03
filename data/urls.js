@@ -1,8 +1,10 @@
-export const urls = {
-  mainurl: { url: "https://www.saucedemo.com/" },
-  inventoryUrl: { url: "https://www.saucedemo.com/inventory.html" },
-  carturl: { url: "https://www.saucedemo.com/cart.html" },
-  chekoutone: { url: "https://www.saucedemo.com/checkout-step-one.html" },
-  checkouttwo: { url: "https://www.saucedemo.com/checkout-step-two.html" },
-  checkoutcomplete: { url: "https://www.saucedemo.com/checkout-complete.html" },
-};
+export const BASE_URL = 'https://www.saucedemo.com/'
+
+export const URLS = {
+  mainurl: `${BASE_URL}`,
+  inventoryUrl: `${BASE_URL}/inventory.html`,
+  carturl: `${BASE_URL}/cart.html`,
+  chekoutone: `${BASE_URL}/checkout-step-one.html`,
+  checkouttwo: `${BASE_URL}/checkout-step-two.html`,
+  checkoutcomplete: `${BASE_URL}/checkout-complete.html`,
+}
