@@ -1,23 +1,27 @@
-import {expect} from '@playwright/test'
-import {URLS} from '../data/urls'
+import { expect } from "@playwright/test";
+import { URLS } from "../data/urls";
 
 // Why not include some locators in the methods themselves? you already put some of them as class variables.
 export class CheckoutStepTwoPage {
-  cancelButton = '[data-test="cancel"]'
-  finishButton = '[data-test="finish"]'
+  cancelButton = '[data-test="cancel"]';
+  finishButton = '[data-test="finish"]';
+  title = '[data-test="title"]';
   constructor(page) {
-    this.page = page
+    this.page = page;
   }
   async openCheckoutStepTwoPage() {
-    await this.page.goto(URLS.checkouttwo)
-    await expect(this.page.locator('[data-test="title"]')).toHaveText(
-      'Checkout: Overview',
-    )
+    await this.page.goto(URLS.checkouttwo);
+  }
+  async expectLoaded() {
+    await expect(this.page).toHaveURL(URLS.checkouttwo);
+    await expect(this.page.locator(this.title)).toHaveText(
+      "Checkout: Overview",
+    );
   }
   async cancelOrder() {
-    await this.page.locator(this.cancelButton).click()
+    await this.page.locator(this.cancelButton).click();
   }
   async finishOrder() {
-    await this.page.locator(this.finishButton).click()
+    await this.page.locator(this.finishButton).click();
   }
 }
