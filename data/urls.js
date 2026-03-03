@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://www.saucedemo.com/'
+export const BASE_URL = "https://www.saucedemo.com";
 
 export const URLS = {
   mainurl: `${BASE_URL}`,
@@ -7,4 +7,4 @@ export const URLS = {
   chekoutone: `${BASE_URL}/checkout-step-one.html`,
   checkouttwo: `${BASE_URL}/checkout-step-two.html`,
   checkoutcomplete: `${BASE_URL}/checkout-complete.html`,
-}
+};
