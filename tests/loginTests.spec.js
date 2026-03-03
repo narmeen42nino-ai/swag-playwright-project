@@ -1,144 +1,134 @@
-import {expect, test} from '@playwright/test'
-import {LoginPage} from '../Page/LoginPage'
-import {URLS} from '../data/urls'
-import {users} from '../data/userName'
+import { expect, test } from "@playwright/test";
+import { LoginPage } from "../Page/LoginPage";
+import { URLS } from "../data/urls";
+import { users } from "../data/userName";
+import { ProductPage } from "../Page/ProductsPage";
 
 // Don't include some locators in the test files?
-test.describe('positive login tests', () => {
-  test('standard user login', async ({page}) => {
-    const loginPage = new LoginPage(page)
-    await loginPage.openLoginPage()
+test.describe("positive login tests", () => {
+  test("standard user login", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const productsPage = new ProductPage(page);
+    await loginPage.openLoginPage();
     await loginPage.login(
       users.standardUser.username,
       users.standardUser.password,
-    )
-    await expect(page).toHaveURL(URLS.inventoryUrl)
-    await expect(page.locator('[data-test="title"]')).toHaveText('Products')
-  })
-
-  test('problem user login', async ({page}) => {
-    const loginPage = new LoginPage(page)
-    await loginPage.openLoginPage()
+    );
+    await productsPage.expectLoaded();
+  });
+  test("problem user login", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const productsPage = new ProductPage(page);
+    await loginPage.openLoginPage();
     await loginPage.login(
       users.problemUser.username,
       users.problemUser.password,
-    )
-    await expect(page).toHaveURL(URLS.inventoryUrl)
-    await expect(page.locator('[data-test="title"]')).toHaveText('Products')
-  })
-  test('performance glitch user login', async ({page}) => {
-    const loginPage = new LoginPage(page)
-    await loginPage.openLoginPage()
+    );
+    await productsPage.expectLoaded();
+  });
+  test("performance glitch user login", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const productsPage = new ProductPage(page);
+
+    await loginPage.openLoginPage();
     await loginPage.login(
       users.performanceUser.username,
       users.performanceUser.password,
-    )
-    await expect(page).toHaveURL(URLS.inventoryUrl)
-    await expect(page.locator('[data-test="title"]')).toHaveText('Products')
-  })
-  test('error user login', async ({page}) => {
-    const loginPage = new LoginPage(page)
-    await loginPage.openLoginPage()
-    await loginPage.login(users.errorUser.username, users.errorUser.password)
-    await expect(page).toHaveURL(URLS.inventoryUrl)
-    await expect(page.locator('[data-test="title"]')).toHaveText('Products')
-  })
+    );
+    await productsPage.expectLoaded();
+  });
+  test("error user login", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const productsPage = new ProductPage(page);
+    await loginPage.openLoginPage();
+    await loginPage.login(users.errorUser.username, users.errorUser.password);
+    await productsPage.expectLoaded();
+  });
 
-  test('visual user', async ({page}) => {
-    const loginPage = new LoginPage(page)
-    await loginPage.openLoginPage()
-    await loginPage.login(users.visualUser.username, users.visualUser.password)
-    await expect(page).toHaveURL(URLS.inventoryUrl)
-    await expect(page.locator('[data-test="title"]')).toHaveText('Products')
-  })
-})
+  test("visual user", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const productsPage = new ProductPage(page);
 
-test.describe('Negative Login Tests', () => {
-  test('Locked out user', async ({page}) => {
-    const loginPage = new LoginPage(page)
-    await loginPage.openLoginPage()
+    await loginPage.openLoginPage();
+    await loginPage.login(users.visualUser.username, users.visualUser.password);
+    await productsPage.expectLoaded();
+  });
+});
+
+test.describe("Negative Login Tests", () => {
+  test("Locked out user", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.openLoginPage();
     await loginPage.login(
       users.lockedOutUser.username,
       users.lockedOutUser.password,
-    )
-    await expect(page).toHaveURL(URLS.mainurl)
-    await expect(page.locator('[data-test="error"]')).toHaveText(
-      'Epic sadface: Sorry, this user has been locked out.',
-    )
-  })
+    );
+    await loginPage.expectErrorMessage(
+      "Epic sadface: Sorry, this user has been locked out.",
+    );
+  });
 
-  test('wrong password', async ({page}) => {
-    const loginPage = new LoginPage(page)
-    await loginPage.openLoginPage()
+  test("wrong password", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.openLoginPage();
+
     await loginPage.login(
       users.wrongPassword.username,
       users.wrongPassword.password,
-    )
-    await expect(page).toHaveURL(URLS.mainurl)
-    await expect(page.locator('[data-test="error"]')).toHaveText(
-      'Epic sadface: Username and password do not match any user in this service',
-    )
-  })
+    );
+    await loginPage.expectErrorMessage(
+      "Epic sadface: Username and password do not match any user in this service",
+    );
+  });
 
-  test('Wrong UserName', async ({page}) => {
-    const loginPage = new LoginPage(page)
-    await loginPage.openLoginPage()
+  test("Wrong UserName", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.openLoginPage();
     await loginPage.login(
       users.wrongUsername.username,
       users.wrongUsername.password,
-    )
-    await expect(page).toHaveURL(URLS.mainurl)
-    await expect(page.locator('[data-test="error"]')).toHaveText(
-      'Epic sadface: Username and password do not match any user in this service',
-    )
-  })
+    );
+    await loginPage.expectErrorMessage(
+      "Epic sadface: Username and password do not match any user in this service",
+    );
+  });
 
-  test('Wrong UserName And Password', async ({page}) => {
-    const loginPage = new LoginPage(page)
-    await loginPage.openLoginPage()
+  test("Wrong UserName And Password", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.openLoginPage();
     await loginPage.login(
       users.wrongUserAndwrongPassword.username,
       users.wrongUserAndwrongPassword.password,
-    )
-    await expect(page).toHaveURL(URLS.mainurl)
-    await expect(page.locator('[data-test="error"]')).toHaveText(
-      'Epic sadface: Username and password do not match any user in this service',
-    )
-  })
+    );
+    await loginPage.expectErrorMessage(
+      "Epic sadface: Username and password do not match any user in this service",
+    );
+  });
 
-  test('Empty Username', async ({page}) => {
-    const loginPage = new LoginPage(page)
-    await loginPage.openLoginPage()
+  test("Empty Username", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.openLoginPage();
     await loginPage.login(
       users.emptyUsername.username,
       users.emptyUsername.password,
-    )
-    await expect(page).toHaveURL(URLS.mainurl)
-    await expect(page.locator('[data-test="error"]')).toHaveText(
-      'Epic sadface: Username is required',
-    )
-  })
+    );
+    await loginPage.expectErrorMessage("Epic sadface: Username is required");
+  });
 
-  test('Empty Password', async ({page}) => {
-    const loginPage = new LoginPage(page)
-    await loginPage.openLoginPage()
+  test("Empty Password", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.openLoginPage();
     await loginPage.login(
       users.emptyPassword.username,
       users.emptyPassword.password,
-    )
-    await expect(page).toHaveURL(URLS.mainurl)
-    await expect(page.locator('[data-test="error"]')).toHaveText(
-      'Epic sadface: Password is required',
-    )
-  })
+    );
+    await loginPage.expectErrorMessage("Epic sadface: Password is required");
+  });
 
-  test('Empty Username And password', async ({page}) => {
-    const loginPage = new LoginPage(page)
-    await loginPage.openLoginPage()
-    await loginPage.login(users.emptyField.username, users.emptyField.password)
-    await expect(page).toHaveURL(URLS.mainurl)
-    await expect(page.locator('[data-test="error"]')).toHaveText(
-      'Epic sadface: Username is required',
-    )
-  })
-})
+  test("Empty Username And password", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.openLoginPage();
+    await loginPage.login(users.emptyField.username, users.emptyField.password);
+    await loginPage.expectErrorMessage("Epic sadface: Username is required");
+  });
+});
