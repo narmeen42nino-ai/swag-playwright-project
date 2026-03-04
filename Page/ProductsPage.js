@@ -1,7 +1,6 @@
 import { expect } from "@playwright/test";
 import { URLS } from "../data/urls";
 
-// Why not include some locators in the methods themselves? you already put some of them as class variables.
 export class ProductPage {
   addBackpack = '[data-test="add-to-cart-sauce-labs-backpack"]';
   addBikelight = '[data-test="add-to-cart-sauce-labs-bike-light"]';
