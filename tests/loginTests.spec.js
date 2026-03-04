@@ -4,7 +4,7 @@ import { URLS } from "../data/urls";
 import { users } from "../data/userName";
 import { ProductPage } from "../Page/ProductsPage";
 
-// Don't include some locators in the test files?
+// the bonus part should be implemented here as well.
 test.describe("positive login tests", () => {
   test("standard user login", async ({ page }) => {
     const loginPage = new LoginPage(page);
